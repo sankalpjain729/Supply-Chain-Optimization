@@ -4,6 +4,18 @@
 
 This project implements a **Mixed Integer Linear Programming (MILP) solver from scratch** using the **Branch-and-Bound algorithm**. The solver is designed to solve optimization problems with linear objectives, linear constraints, and integer decision variables.
 
+## Project Plan
+
+This project is organized around a clear algorithmic workflow:
+
+- Build a modular MILP model representation (`model.py`)
+- Solve the LP relaxation for the root node using SciPy HiGHS
+- Use best-first Branch-and-Bound search with a priority heap
+- Select the most fractional variable for branching
+- Create child nodes with tighter bounds and re-solve LP relaxations
+- Update the incumbent when integer-feasible solutions are found
+- Benchmark against established solvers and real-world problem families
+
 ## Problem Statement
 
 The objective was to design and implement a MILP solver that demonstrates:
@@ -27,6 +39,7 @@ The objective was to design and implement a MILP solver that demonstrates:
   - `validators.py` — Solution feasibility checks
 
 ### 2. **Branch-and-Bound Engine**
+![Branch and Bound Solver Flow](./milp-branch-and-bound.png)
 Key features:
 - **Node Selection**: Best-first search using LP bound as priority
 - **Branching Strategy**: Most fractional variable selection (MFV)
@@ -47,6 +60,25 @@ Tested on:
 - **Knapsack**: Easy, Hard, Tight variants with 8-18 variables
 - **TSPLIB**: burma14 (14 cities), ulysses22 (22 cities)
 - **CVRPLIB**: Public benchmark instances (E-n13-k4, P-n16-k8)
+
+## Benchmark Results
+
+Benchmark data were collected from the shared spreadsheet `MILP_Solver_Benchmark` sheet.
+
+- Total benchmark instances: **13**
+- Successful integer solutions: **12 / 13**
+- Average optimality gap: **0.00%** for solved instances
+- Average runtime: **6.86 seconds**
+
+### Sample Results
+
+| Instance | Family | Our Obj | Baseline Obj | Gap % | Time (s) | Nodes | Status |
+|---|---|---|---|---|---|---|---|
+| `burma14` | TSPLIB | 3268 | 3268 | 0.00 | 21.60 | 3909 | Optimal |
+| `ulysses22` | TSPLIB | — | 8426 | — | 65.70 | 5000 | No solution |
+| `kp_n18_seed4` | Knapsack-Hard | 329 | 329 | 0.00 | 0.79 | 409 | Optimal |
+
+Detailed results and per-instance comments are available in the Google Sheet: [MILP_Solver_Benchmark](https://docs.google.com/spreadsheets/d/1Vwo1Fi4oYVJ0CTg8YfIhmtVyDnBkhli5c1R0brgjio0/edit?gid=2085508115#gid=2085508115).
 
 Compared metrics:
 - Solution quality (objective value, optimality gap %)

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="380" viewBox="0 0 820 380">
+  <style>text{font-family:Arial,Helvetica,sans-serif;fill:#1a202c;} .title{font-size:18px;font-weight:700;} .box{fill:#f9fbff;stroke:#2f5d99;stroke-width:2;} .header{fill:#d8e6ff;stroke:#2f5d99;stroke-width:2;} .line{fill:none;stroke:#2f5d99;stroke-width:3;marker-end:url(#arrow);}</style>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2f5d99"/></marker></defs>
+  <text x="20" y="28" class="title">MILP Solver Branch-and-Bound Flow</text>
+  <rect x="20" y="50" width="260" height="65" rx="12" ry="12" class="box"/>
+  <text x="40" y="80">Root LP Relaxation</text>
+  <text x="40" y="100" class="small">Build root node, solve LP</text>
+  <line x1="150" y1="115" x2="150" y2="155" class="line"/>
+  <rect x="290" y="155" width="240" height="65" rx="12" ry="12" class="box"/>
+  <text x="310" y="180">Bound Check & Pruning</text>
+  <text x="310" y="200" class="small">Prune nodes whose bound ≥ incumbent</text>
+  <line x1="410" y1="220" x2="410" y2="255" class="line"/>
+  <rect x="470" y="255" width="240" height="65" rx="12" ry="12" class="box"/>
+  <text x="490" y="280">Branch on Fractional Variable</text>
+  <text x="490" y="300" class="small">Create two child nodes with tighter bounds</text>
+  <line x1="590" y1="320" x2="590" y2="355" class="line"/>
+  <rect x="20" y="255" width="240" height="65" rx="12" ry="12" class="box"/>
+  <text x="40" y="280">Integer Feasibility Check</text>
+  <text x="40" y="300" class="small">If integer solution, update incumbent</text>
+  <line x1="140" y1="315" x2="140" y2="350" class="line"/>
+  <rect x="290" y="350" width="520" height="65" rx="12" ry="12" class="header"/>
+  <text x="310" y="380">Continue exploration until heap empty or global optimality stop</text>
+  <line x1="270" y1="188" x2="290" y2="188" class="line"/>
+  <line x1="410" y1="305" x2="470" y2="305" class="line"/>
+  <line x1="350" y1="320" x2="350" y2="350" class="line"/> 
+</svg>
