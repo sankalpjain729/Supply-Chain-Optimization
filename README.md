@@ -9,6 +9,7 @@ This repository contains separate project folders for supply-chain related work.
 - `project-3` — placeholder folder for next project.
 - `project-4` — placeholder folder for next project.
 - `project-5` — placeholder folder for next project.
+- `project-6` — Vehicle Routing with Time Windows (VRPTW) solver project.
 
 ## How to use
 

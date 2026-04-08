@@ -1,0 +1,19 @@
+<svg width="760" height="420" xmlns="http://www.w3.org/2000/svg">
+  <rect width="760" height="420" fill="#ffffff" stroke="#333" stroke-width="1"/>
+  <text x="30" y="40" font-size="22" font-family="Arial" font-weight="bold">Vehicle Routing with Time Windows (VRPTW)</text>
+  <text x="30" y="70" font-size="14" font-family="Arial">Minimize total travel distance while respecting capacity and delivery time windows.</text>
+  <rect x="30" y="100" width="320" height="120" rx="10" ry="10" fill="#f0f8ff" stroke="#1f77b4" stroke-width="2"/>
+  <text x="45" y="130" font-size="14" font-family="Arial" font-weight="bold">Decision Variables</text>
+  <text x="45" y="155" font-size="13" font-family="Arial">x[i,j,k] = 1 if vehicle k travels from i to j</text>
+  <text x="45" y="175" font-size="13" font-family="Arial">T[i] = arrival time at node i</text>
+  <text x="45" y="195" font-size="13" font-family="Arial">late[i] = minutes late at customer i</text>
+  <text x="45" y="215" font-size="13" font-family="Arial">overload[k] = capacity excess for vehicle k</text>
+  <rect x="30" y="240" width="700" height="150" rx="10" ry="10" fill="#fff8dc" stroke="#ff7f0e" stroke-width="2"/>
+  <text x="45" y="270" font-size="14" font-family="Arial" font-weight="bold">Core Constraints</text>
+  <text x="45" y="295" font-size="13" font-family="Arial">1. Each customer is visited exactly once or skipped with a penalty</text>
+  <text x="45" y="315" font-size="13" font-family="Arial">2. Flow conservation: vehicles entering a customer must also leave</text>
+  <text x="45" y="335" font-size="13" font-family="Arial">3. Each vehicle starts and ends at the depot</text>
+  <text x="45" y="355" font-size="13" font-family="Arial">4. Capacity rule: demand on a route ≤ vehicle capacity + overload</text>
+  <text x="45" y="375" font-size="13" font-family="Arial">5. Time windows: arrival time respects [a_i, b_i] with soft lateness</text>
+  <text x="45" y="395" font-size="13" font-family="Arial">6. Subtour elimination through time continuity and Big-M</text>
+</svg>
