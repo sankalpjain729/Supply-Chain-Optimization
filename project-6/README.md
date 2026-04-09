@@ -2,6 +2,8 @@
 
 This project implements a Vehicle Routing Problem with Time Windows (VRPTW) model for the QPIAI assignment. It generates synthetic customer data, formulates the problem as a MILP, solves it with an open-source solver, and provides route output.
 
+![Multi-Start Simulated Annealing for Max-Cut](./vrptw-multi-start-sa.png)
+
 ![VRPTW Formulation](./vrptw-formulation.svg)
 
 ## Problem Statement
