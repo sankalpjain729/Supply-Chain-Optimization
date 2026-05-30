@@ -4,7 +4,7 @@
 
 from data_definition import data_package
 from model_initialization import model
-from objective_function import objective_function
+from objective_function import *
 from constraints import model
 from data_definition import df_demand
 from data_definition import warehouses
