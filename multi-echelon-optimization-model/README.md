@@ -1,8 +1,7 @@
 ````markdown
 # Multi-Echelon Supply Chain Optimization Model
 
-A comprehensive optimization model for multi-echelon supply chain networks using Pyomo and GLPK solver. This model optimizes production, warehousing, and distribution decisions across factories, warehouses, and customers.
-
+A comprehensive optimization model for multi-echelon supply chain networks using Pyomo and HiGHS solver. This model optimizes production, warehousing, and distribution decisions across factories, warehouses, and customers.
 ## 📋 Project Overview
 
 This project implements a **three-level supply chain network optimization**:
@@ -27,7 +26,7 @@ multi-echelon-optimization-model/
 ├── 03_model_initialization.py   # Initialize Pyomo model with sets, params, variables
 ├── 04_objective_function.py     # Define minimization objective
 ├── 05_constraints.py            # Add all operational constraints
-├── 06_solver.py                 # Configure and run GLPK solver
+├── 06_solver.py                 # Configure and run HiGHS solver
 ├── 07_results_analysis.py       # Analyze and display results
 ├── 08_visualization.py          # Create network visualization
 ├── 09_main_runner.py            # Main execution orchestrator
@@ -39,6 +38,7 @@ multi-echelon-optimization-model/
 ### Prerequisites
 - Python 3.7+
 - pip package manager
+- HiGHS solver
 
 ### Installation & Execution
 
@@ -105,26 +105,27 @@ python 08_visualization.py
 ```
 Minimize: Z = 
     ∑ OC[j]·Y[j]                                    # Fixed warehouse costs
-  + ∑ SC[i,j,k]·F_flow[i,j,k]                     # Inbound shipping costs
-  + ∑ TC[j,c,k]·X[j,c,k]                          # Outbound transport costs
-  + ∑ RC[i,k]·R[i,k]                              # Regular production costs
-  + ∑ OC_p[i,k]·O[i,k]                            # Overtime production costs
-  + P1·s_demand                                    # Unmet demand penalty (10,000)
-  + P2·∑(s_under[i,k] + s_over[i,k])             # Logistics mismatch penalty (50)
-  + P3·∑s_cap[j]                                  # Over-capacity penalty (10,000)
+  + ∑ SC[i,j,k]·F_flow[i,j,k]                     # Factory → warehouse transport cost
+  + ∑ TC[j,c,k]·X[j,c,k]                          # Warehouse → customer transport cost
+  + ∑ RC[i,k]·R[i,k]                              # Regular production cost
+  + ∑ OC_p[i,k]·O[i,k]                            # Overtime production cost
+  + P1·s_demand                                   # Unmet demand penalty
+  + P2·∑ s_cap[j]                                 # Capacity violation penalty
+  + ε1·warehouse_penalty                          # Tie-breaking term
+  + ε2·flow_penalty                               # Flow regularization term
 ```
 
 ### Constraints
 
 | ID | Constraint | Mathematical Form |
 |----|-----------|-------------------|
-| **C1** | Demand Coverage | ∑∑∑ X[j,c,k] + s_demand ≥ 0.8·D_total |
-| **C2** | Max Demand Ceiling | ∑ X[j,c,k] ≤ D[c,k] ∀c,k |
-| **C3** | Flow Balance | ∑ F_flow[i,j,k] = ∑ X[j,c,k] ∀j,k |
-| **C4** | Warehouse Capacity | ∑∑ F_flow[i,j,k] - s_cap[j] ≤ Cap[j]·Y[j] ∀j |
-| **C5** | Production Balance | ∑ F_flow[i,j,k] + s_under - s_over = R + O ∀i,k |
-| **C6** | Regular Time Limit | ∑ t[i,k]·R[i,k] ≤ RegTime[i] ∀i |
-| **C7** | Overtime Limit | ∑ t[i,k]·O[i,k] ≤ OTTime[i] ∀i |
+| **C1** | Global demand satisfaction | ∑∑∑ X[j,c,k] + s_demand ≥ 0.8·D_total |
+| **C2** | Customer-wise demand cap | ∑_{j ∈ W} X[j,c,k] ≤ D[c,k]    ∀ c ∈ C, k ∈ P |
+| **C3** | Warehouse flow balance | ∑_{i ∈ F} F_flow[i,j,k] = ∑_{c ∈ C} X[j,c,k] ∀j,k |
+| **C4** | Warehouse Capacity (soft) | ∑_{i ∈ F} ∑_{k ∈ P} F_flow[i,j,k] - s_cap[j] ≤ Cap[j] · Y[j]    ∀ j ∈ W |
+| **C5** | Factory Production Balance (strict) | ∑_{j ∈ W} F_flow[i,j,k] = R[i,k] + O[i,k]    ∀ i ∈ F, k ∈ P |
+| **C6** | Regular Time Capacity | ∑_{k ∈ P} t[i,k] · R[i,k] ≤ RegTime[i]    ∀ i ∈ F |
+| **C7** | Overtime Capacity | ∑_{k ∈ P} t[i,k] · O[i,k] ≤ OTTime[i]    ∀ i ∈ F |
 
 ## 📈 Data Parameters
 
@@ -153,43 +154,73 @@ Minimize: Z =
 ## 📊 Sample Output
 
 ```
-====================================================================
+============================================================
 SOLUTION RESULTS
-====================================================================
+============================================================
+
 Solver Status           : ok
 Termination Condition   : optimal
-Opened Warehouses       : ['W1', 'W3']
-Total Network Cost      : $15,234.50
+Opened Warehouses       : ['W1', 'W2', 'W4']
+Total Network Cost      : $21,746.16
 
-====================================================================
+============================================================
 FACTORY PRODUCTION PLAN
-====================================================================
-F1 produces 45.0 units of P1 (Regular Time)
-F1 produces 12.0 units of P2 (Overtime)
-...
+============================================================
+F1 produces 72.3 units of P1 (Regular Time)
+F1 produces 4.7 units of P1 (Overtime)
+F1 produces 6.4 units of P2 (Overtime)
+F1 produces 10.3 units of P3 (Regular Time)
+F2 produces 16.0 units of P1 (Overtime)
+F2 produces 57.1 units of P2 (Regular Time)
+F3 produces 33.5 units of P1 (Regular Time)
+F3 produces 62.0 units of P3 (Regular Time)
+F4 produces 11.8 units of P1 (Regular Time)
+F4 produces 18.2 units of P1 (Overtime)
+F4 produces 83.8 units of P3 (Regular Time)
 
-====================================================================
+============================================================
 FACTORY TO WAREHOUSE SHIPMENTS
-====================================================================
-Ship 45.0 units of P1 from F1 → W1
-Ship 12.0 units of P2 from F1 → W3
-...
+============================================================
+Ship 77.0 units of P1 from F1 → W1
+Ship 6.4 units of P2 from F1 → W1
+Ship 10.3 units of P3 from F1 → W1
+Ship 15.6 units of P2 from F2 → W1
+Ship 16.0 units of P1 from F2 → W2
+Ship 8.5 units of P2 from F2 → W2
+Ship 33.0 units of P2 from F2 → W4
+Ship 33.5 units of P1 from F3 → W2
+Ship 62.0 units of P3 from F3 → W2
+Ship 40.8 units of P3 from F4 → W1
+Ship 30.0 units of P1 from F4 → W4
+Ship 43.0 units of P3 from F4 → W4
 
-====================================================================
+============================================================
 WAREHOUSE TO CUSTOMER DELIVERIES
-====================================================================
+============================================================
 Deliver 22.0 units of P1 from W1 → C1
-Deliver 8.0 units of P2 from W3 → C2
-...
+Deliver 25.0 units of P3 from W1 → C1
+Deliver 21.0 units of P1 from W1 → C4
+Deliver 22.0 units of P2 from W1 → C4
+Deliver 26.0 units of P3 from W1 → C4
+Deliver 34.0 units of P1 from W1 → C6
+Deliver 25.0 units of P1 from W2 → C2
+Deliver 8.5 units of P2 from W2 → C2
+Deliver 32.0 units of P3 from W2 → C2
+Deliver 24.5 units of P1 from W2 → C5
+Deliver 30.0 units of P3 from W2 → C5
+Deliver 30.0 units of P1 from W4 → C3
+Deliver 6.0 units of P2 from W4 → C3
+Deliver 21.0 units of P3 from W4 → C3
+Deliver 27.0 units of P2 from W4 → C6
+Deliver 22.0 units of P3 from W4 → C6
 
-====================================================================
+============================================================
 PENALTY & SLACK ANALYSIS
-====================================================================
+============================================================
+
 Unmet Demand            : 0.0 units
-Logistics Under-shipment: 0.0 units
-Logistics Over-shipment : 0.0 units
-Warehouse Over-capacity : 0.0 units
-```
+Warehouse Over-capacity : 0.0 units 
+``` 
 
 ## 🎨 Visualization
 
@@ -207,7 +238,7 @@ The model generates a 3-layer network graph showing:
 - **P3** (Over-Capacity): $10,000 per unit
 
 ### Solver
-- **Solver**: GLPK (GNU Linear Programming Kit)
+- **Solver**: HiGHS (High-Performance Solver)
 - **Problem Type**: Mixed-Integer Linear Program (MILP)
 - **Optimization Direction**: Minimize
 
@@ -219,7 +250,7 @@ pandas>=1.0         # Data manipulation
 numpy>=1.19         # Numerical computing
 networkx>=2.5       # Graph visualization
 matplotlib>=3.3     # Plotting
-glpk>=4.65          # Linear programming solver
+highspy>=0.1.0      # High-Performance Solver
 ```
 
 Install all dependencies:
@@ -260,16 +291,16 @@ P3 = 15000  # Increase over-capacity penalty
 
 ## 🐛 Troubleshooting
 
-### Issue: "GLPK not found"
-**Solution**: Install GLPK
+### Issue: "HiGHS not found"
+**Solution**: Install HiGHS
 ```bash
 # Ubuntu/Debian
-sudo apt-get install glpk-utils
+sudo apt-get install highs-utils
 
 # macOS
-brew install glpk
+brew install highs
 
-# Windows: Download from http://www.gnu.org/software/glpk/
+# Windows: Download from https://highs.dev/
 ```
 
 ### Issue: "Module not found"

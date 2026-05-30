@@ -113,30 +113,7 @@ model.Y = pyo.Var(model.W, domain=pyo.Binary)
 # Captures how many units of customer demand we completely failed to deliver.
 model.s_demand = pyo.Var(domain=pyo.NonNegativeReals)
 
-# Math Form: s_under[i,k] ≥ 0
-# Captures if we shipped LESS units out of factory 'i' than we actually manufactured.
-model.s_under = pyo.Var(model.F, model.P, domain=pyo.NonNegativeReals)
-
-# Math Form: s_over[i,k] ≥ 0
-# Captures if we tried to ship MORE units out of factory 'i' than we actually manufactured.
-model.s_over = pyo.Var(model.F, model.P, domain=pyo.NonNegativeReals)
-
 # Math Form: s_cap[j] ≥ 0
 # Captures exactly how many extra units we packed into warehouse 'j' past its real limit.
 model.s_cap = pyo.Var(model.W, domain=pyo.NonNegativeReals)
 
-# =====================================================================
-# EXPORT MODEL FOR USE IN OBJECTIVE AND CONSTRAINTS
-# =====================================================================
-
-if __name__ == "__main__":
-    print("=" * 60)
-    print("MODEL INITIALIZATION COMPLETED SUCCESSFULLY")
-    print("=" * 60)
-    print(f"\nModel Type: {type(model).__name__}")
-    print(f"Number of Sets: {len(model.component_map(pyo.Set))}")
-    print(f"Number of Parameters: {len(model.component_map(pyo.Param))}")
-    print(f"Number of Variables: {len(model.component_map(pyo.Var))}")
-    print(f"\nSets defined: F, W, C, P")
-    print(f"Decision variables defined: R, O, F_flow, X, Y")
-    print(f"Slack variables defined: s_demand, s_under, s_over, s_cap")

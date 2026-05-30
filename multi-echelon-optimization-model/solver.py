@@ -23,7 +23,10 @@ def solve_model():
     print("SOLVING OPTIMIZATION MODEL...")
     print("=" * 60)
     
-    solver = pyo.SolverFactory('glpk')
+    solver = pyo.SolverFactory('highs')
+    solver = pyo.SolverFactory("appsi_highs")
+    solver.options["random_seed"] = 42
+    # solver.options["time_limit"] = 60
     results = solver.solve(model)
     
     return results
