@@ -1,10 +1,10 @@
 """
 06_SOLVER.PY
 =============
-Solves the Multi-Echelon Supply Chain Optimization Model using GLPK solver.
+Solves the Multi-Echelon Supply Chain Optimization Model using HiGHS solver.
 
 This module:
-- Initializes the GLPK solver
+- Initializes the HiGHS solver (appsi_highs)
 - Solves the optimization problem
 - Displays basic solution status
 """
@@ -16,14 +16,14 @@ from constraints import model
 # SOLVER RUN
 # =====================================================================
 
-def solve_model():
+def solve_model(verbose=True):
     """Solve the optimization model"""
     
-    print("\n" + "=" * 60)
-    print("SOLVING OPTIMIZATION MODEL...")
-    print("=" * 60)
-    
-    solver = pyo.SolverFactory('highs')
+    if verbose:
+        print("\n" + "=" * 60)
+        print("SOLVING OPTIMIZATION MODEL...")
+        print("=" * 60)
+     
     solver = pyo.SolverFactory("appsi_highs")
     solver.options["random_seed"] = 42
     # solver.options["time_limit"] = 60
