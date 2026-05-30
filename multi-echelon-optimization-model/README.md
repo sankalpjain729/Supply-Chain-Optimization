@@ -95,9 +95,7 @@ python 08_visualization.py
 
 | Variable | Description | Purpose |
 |----------|-------------|---------|
-| `s_demand` | Unmet customer demand | Allows feasibility with penalty |
-| `s_under[i,k]` | Under-shipment from factory i | Captures logistics discrepancy |
-| `s_over[i,k]` | Over-shipment from factory i | Captures logistics discrepancy |
+| `s_demand` | Unmet customer demand | Allows feasibility with penalty | 
 | `s_cap[j]` | Warehouse j over-capacity | Allows feasibility with penalty |
 
 ### Objective Function
@@ -221,6 +219,115 @@ PENALTY & SLACK ANALYSIS
 Unmet Demand            : 0.0 units
 Warehouse Over-capacity : 0.0 units 
 ``` 
+
+### Greedy Heuristic
+
+### Starts with all warehouses closed and no production/transport decisions made
+### Targets only **80% of total demand** instead of full satisfaction for feasibility
+### Repeatedly searches all factory–warehouse–customer combinations
+
+### Filters out infeasible choices:
+### warehouse capacity exceeded
+### factory time (regular + overtime) unavailable
+### no remaining demand
+
+### For each feasible option:
+### computes production cost (regular or overtime)
+### adds transport cost (factory → warehouse → customer)
+### adds penalty if a warehouse is being opened for the first time
+
+### Selects the option with **minimum total cost**
+
+### Decides shipment quantity based on:
+### remaining demand
+### warehouse capacity
+### factory time limits
+
+### Executes the decision and updates:
+### demand remaining
+### warehouse capacity used
+### factory time usage
+### total cost
+
+### Repeats until:
+### 80% demand is met, or
+### no valid move exists
+
+## 🔍 Heuristic Solution
+
+### Running Greedy Heuristic
+```bash
+python heuristic.py
+```
+### Heuristic Summary
+```text
+# Demand fulfilled       : 376.00 / 376.00
+# Warehouses used        : ['W1', 'W3', 'W5']
+# Fixed cost             : $16,200.00
+# Variable cost          : $7,619.29
+# Total heuristic cost   : $23,819.29
+```
+
+## 🔍 Sensitivity Analysis
+
+Tests network resilience across three demand scenarios (85%, 100%, and 125% of baseline demand).
+
+### Running Sensitivity Analysis
+```bash
+python sensitivity_analysis.py
+```
+
+### Sample Output
+```
+--- STARTING MILP SENSITIVITY RUNS ---
+
+============================================================
+  SCENARIO: Low Demand (85%)
+============================================================
+  Demand Multiplier     : 85%
+  Total Demand          : 399.5 units
+  Delivered / Target    : 319.6 / 319.6 units
+  Fill Rate             : 80.0%
+  Target Achievement    : 100.0%
+  Opened Hubs (2)     : W1, W3
+  True Network Cost     : $17,050.78
+  Penalty Cost          : $480.00
+  Capacity Violations   : 9.6 units
+
+============================================================
+  SCENARIO: Baseline Demand (100%)
+============================================================
+  Demand Multiplier     : 100%
+  Total Demand          : 470.0 units
+  Delivered / Target    : 376.0 / 376.0 units
+  Fill Rate             : 80.0%
+  Target Achievement    : 100.0%
+  Opened Hubs (3)     : W1, W2, W4
+  True Network Cost     : $21,746.16
+  Penalty Cost          : $0.00
+  Capacity Violations   : 0.0 units
+
+============================================================
+  SCENARIO: High Stress Demand (125%)
+============================================================
+  Demand Multiplier     : 125%
+  Total Demand          : 587.5 units
+  Delivered / Target    : 399.3 / 470.0 units
+  Fill Rate             : 68.0%
+  Target Achievement    : 85.0%
+  Opened Hubs (3)     : W1, W2, W5
+  True Network Cost     : $22,719.19
+  Penalty Cost          : $706,603.17
+  Capacity Violations   : 0.0 units
+
+============================================================
+             SUPPLY CHAIN RESILIENCY REPORT
+============================================================
+                            Status  Target 80% Vol  Actual Delivered  Hub Count  Opened Hubs  True Network Cost  Capacity Violations
+Low Demand (85%)           Optimal          319.6             319.6          2  [W1, W3]        $17,050.78                  9.6
+Baseline Demand (100%)     Optimal          376.0             376.0          3  [W1, W2, W4]    $21,746.16                  0.0
+High Stress Demand (125%)  Optimal          470.0             399.3          3  [W1, W2, W5]    $22,719.19                  0.0
+```
 
 ## 🎨 Visualization
 
