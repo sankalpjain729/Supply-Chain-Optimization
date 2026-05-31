@@ -127,27 +127,87 @@ Minimize: Z =
 
 ## 📈 Data Parameters
 
-### Factory Data
-- Regular Time: 160 hours/week per factory
-- Overtime: 40 hours/week per factory
+All input data is defined in `data_definition.py`. The tables below mirror the model inputs so you can read the problem without opening the code.
 
-### Warehouse Data
-| Warehouse | Operating Cost | Capacity |
-|-----------|----------------|----------|
-| W1 | $5,000 | 150 units |
-| W2 | $4,500 | 120 units |
-| W3 | $6,000 | 160 units |
-| W4 | $4,800 | 110 units |
-| W5 | $5,200 | 140 units |
+### `df_factories` — Factory time capacity (hours/week)
 
-### Production Time & Cost
-- Production times: 1.5-3.2 hours per unit
-- Regular costs: $8-13 per unit
-- Overtime costs: $12-19 per unit
+| Factory | RegTime | OTTime |
+|---------|---------|--------|
+| F1 | 160 | 40 |
+| F2 | 160 | 40 |
+| F3 | 160 | 40 |
+| F4 | 160 | 40 |
 
-### Demand
-- Total demand: ~1,539 units across 6 customers and 3 products
-- Coverage target: ≥80% of total demand
+### `df_warehouses` — Warehouse fixed cost and capacity
+
+| Warehouse | OC ($) | Cap (units) |
+|-----------|--------|-------------|
+| W1 | 5,000 | 150 |
+| W2 | 4,500 | 120 |
+| W3 | 6,000 | 160 |
+| W4 | 4,800 | 110 |
+| W5 | 5,200 | 140 |
+
+### `df_production` — Production time and unit costs
+
+| Factory | Product | t_ik (hrs/unit) | RC_ik ($/unit) | OC_ik ($/unit OT) |
+|---------|---------|-----------------|----------------|-------------------|
+| F1 | P1 | 2.0 | 10.0 | 15.0 |
+| F1 | P2 | 3.0 | 12.0 | 18.0 |
+| F1 | P3 | 1.5 | 8.0 | 12.0 |
+| F2 | P1 | 2.5 | 11.0 | 16.0 |
+| F2 | P2 | 2.8 | 11.0 | 17.0 |
+| F2 | P3 | 1.8 | 9.0 | 13.0 |
+| F3 | P1 | 2.0 | 10.0 | 15.0 |
+| F3 | P2 | 3.2 | 13.0 | 19.0 |
+| F3 | P3 | 1.5 | 8.0 | 12.0 |
+| F4 | P1 | 2.2 | 10.5 | 15.5 |
+| F4 | P2 | 3.0 | 12.0 | 18.0 |
+| F4 | P3 | 1.6 | 8.5 | 12.5 |
+
+### `df_demand` — Customer demand by product (units)
+
+| Customer | P1 | P2 | P3 |
+|----------|----|----|-----|
+| C1 | 22 | 31 | 25 |
+| C2 | 25 | 20 | 32 |
+| C3 | 30 | 24 | 21 |
+| C4 | 21 | 29 | 26 |
+| C5 | 28 | 23 | 30 |
+| C6 | 34 | 27 | 22 |
+| **Total** | **160** | **154** | **156** |
+
+- **Total demand:** 470 units (6 customers × 3 products)
+- **Coverage target (C1):** deliver at least **80%** → 376 units
+
+### Factory → warehouse shipping (`sc_rate_card`, $/unit)
+
+Same cost for all products on a given lane; full tensor is `(factory, warehouse, product)`.
+
+| Factory | W1 | W2 | W3 | W4 | W5 |
+|---------|----|----|----|----|-----|
+| F1 | 4.0 | 6.0 | 5.0 | 7.0 | 3.0 |
+| F2 | 5.0 | 4.0 | 6.0 | 5.0 | 4.0 |
+| F3 | 6.0 | 5.0 | 4.0 | 6.0 | 5.0 |
+| F4 | 3.0 | 7.0 | 5.0 | 4.0 | 6.0 |
+
+### Warehouse → customer shipping (`tc_rate_card`, $/unit)
+
+| Warehouse | C1 | C2 | C3 | C4 | C5 | C6 |
+|-----------|----|----|----|----|----|-----|
+| W1 | 6.0 | 8.0 | 7.0 | 5.0 | 9.0 | 6.0 |
+| W2 | 7.0 | 5.0 | 6.0 | 8.0 | 6.0 | 7.0 |
+| W3 | 5.0 | 7.0 | 8.0 | 6.0 | 5.0 | 8.0 |
+| W4 | 8.0 | 6.0 | 5.0 | 7.0 | 8.0 | 5.0 |
+| W5 | 6.0 | 9.0 | 6.0 | 5.0 | 7.0 | 8.0 |
+
+### Penalty parameters
+
+| Parameter | Value | Meaning |
+|-----------|-------|---------|
+| P1 | $10,000 | Per unit of unmet demand (`s_demand`) |
+| P2 | $50 | Per unit of warehouse over-capacity (`s_cap`) |
+| P3 | $10,000 | Reserved (legacy) |
 
 ## 📊 Sample Output
 
