@@ -220,17 +220,19 @@ Solver Status           : ok
 Termination Condition   : optimal
 Opened Warehouses       : ['W1', 'W2', 'W4']
 Total Network Cost      : $21,746.16
+Demand Fulfillment      : 376.0 / 376.0 units (100.00%)
 
 ============================================================
 FACTORY PRODUCTION PLAN
 ============================================================
 F1 produces 72.3 units of P1 (Regular Time)
 F1 produces 4.7 units of P1 (Overtime)
-F1 produces 6.4 units of P2 (Overtime)
-F1 produces 10.3 units of P3 (Regular Time)
-F2 produces 16.0 units of P1 (Overtime)
+F1 produces 10.2 units of P2 (Overtime)
+F1 produces 10.2 units of P3 (Regular Time)
 F2 produces 57.1 units of P2 (Regular Time)
+F2 produces 7.6 units of P2 (Overtime)
 F3 produces 33.5 units of P1 (Regular Time)
+F3 produces 4.5 units of P1 (Overtime)
 F3 produces 62.0 units of P3 (Regular Time)
 F4 produces 11.8 units of P1 (Regular Time)
 F4 produces 18.2 units of P1 (Overtime)
@@ -240,17 +242,15 @@ F4 produces 83.8 units of P3 (Regular Time)
 FACTORY TO WAREHOUSE SHIPMENTS
 ============================================================
 Ship 77.0 units of P1 from F1 → W1
-Ship 6.4 units of P2 from F1 → W1
-Ship 10.3 units of P3 from F1 → W1
-Ship 15.6 units of P2 from F2 → W1
-Ship 16.0 units of P1 from F2 → W2
-Ship 8.5 units of P2 from F2 → W2
-Ship 33.0 units of P2 from F2 → W4
-Ship 33.5 units of P1 from F3 → W2
+Ship 10.2 units of P2 from F1 → W1
+Ship 10.2 units of P3 from F1 → W1
+Ship 20.0 units of P2 from F2 → W2
+Ship 44.8 units of P2 from F2 → W4
+Ship 38.0 units of P1 from F3 → W2
 Ship 62.0 units of P3 from F3 → W2
-Ship 40.8 units of P3 from F4 → W1
+Ship 48.5 units of P3 from F4 → W1
 Ship 30.0 units of P1 from F4 → W4
-Ship 43.0 units of P3 from F4 → W4
+Ship 35.2 units of P3 from F4 → W4
 
 ============================================================
 WAREHOUSE TO CUSTOMER DELIVERIES
@@ -258,26 +258,31 @@ WAREHOUSE TO CUSTOMER DELIVERIES
 Deliver 22.0 units of P1 from W1 → C1
 Deliver 25.0 units of P3 from W1 → C1
 Deliver 21.0 units of P1 from W1 → C4
-Deliver 22.0 units of P2 from W1 → C4
+Deliver 10.2 units of P2 from W1 → C4
 Deliver 26.0 units of P3 from W1 → C4
 Deliver 34.0 units of P1 from W1 → C6
+Deliver 7.8 units of P3 from W1 → C6
 Deliver 25.0 units of P1 from W2 → C2
-Deliver 8.5 units of P2 from W2 → C2
+Deliver 20.0 units of P2 from W2 → C2
 Deliver 32.0 units of P3 from W2 → C2
-Deliver 24.5 units of P1 from W2 → C5
+Deliver 13.0 units of P1 from W2 → C5
 Deliver 30.0 units of P3 from W2 → C5
 Deliver 30.0 units of P1 from W4 → C3
-Deliver 6.0 units of P2 from W4 → C3
+Deliver 17.8 units of P2 from W4 → C3
 Deliver 21.0 units of P3 from W4 → C3
 Deliver 27.0 units of P2 from W4 → C6
-Deliver 22.0 units of P3 from W4 → C6
+Deliver 14.2 units of P3 from W4 → C6
 
 ============================================================
 PENALTY & SLACK ANALYSIS
 ============================================================
 
 Unmet Demand            : 0.0 units
-Warehouse Over-capacity : 0.0 units 
+Warehouse Over-capacity : 0.0 units
+
+============================================================
+SOLVING OPTIMIZATION MODEL...
+============================================================
 ``` 
 
 ### Greedy Heuristic
