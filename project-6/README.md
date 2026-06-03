@@ -1,6 +1,6 @@
 # Vehicle Routing with Time Windows (VRPTW) Solver
 
-This project implements a Vehicle Routing Problem with Time Windows (VRPTW) model for the QPIAI assignment. It generates synthetic customer data, formulates the problem as a MILP, solves it with an open-source solver, and provides route output.
+This project implements a Vehicle Routing Problem with Time Windows (VRPTW) model for an assignment. It generates synthetic customer data, formulates the problem as a MILP, solves it with an open-source solver, and provides route output.
 
 ![VRPTW Mathematical Formulation](./vrptw-vrptw-formulation.png)
 
@@ -55,7 +55,7 @@ The solver uses an open-source MILP formulation.
 
 ## Deliverables
 
-1. VRPTW MILP formulation in `project-6/vrptw_solver_qpiai.py`
+1. VRPTW MILP formulation in `project-6/vrptw_solver.py`
 2. Open-source solver integration using CBC via Pyomo
 3. Synthetic dataset generation and solution demonstration
 4. Visual representation of the model and route structure
@@ -73,7 +73,7 @@ sudo apt-get update && sudo apt-get install -y coinor-cbc
 
 ```bash
 cd project-6
-python3 vrptw_solver_qpiai.py
+python3 vrptw_solver.py
 ```
 
 ### Expected Output
@@ -111,6 +111,6 @@ This project uses an exact MILP formulation.
 
 ## Files
 
-- `vrptw_solver_qpiai.py` — solver implementation and dataset generator
+- `vrptw_solver.py` — solver implementation and dataset generator
 - `vrptw-formulation.svg` — problem formulation illustration
 - `README.md` — project documentation
