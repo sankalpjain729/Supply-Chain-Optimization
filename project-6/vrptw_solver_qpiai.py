@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""VRPTW Solver for QPIAI assignment.
+"""VRPTW Solver for assignment.
 
 This script builds a Vehicle Routing Problem with Time Windows (VRPTW)
 using Pyomo and solves it with the open-source CBC solver.
