@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="420" viewBox="0 0 800 420">
+  <style>.
+    box{fill:#f4f7fb;stroke:#2f5d99;stroke-width:2;}
+    text{font-family:Arial,Helvetica,sans-serif;fill:#1a202c;font-size:14px;}
+    .title{font-size:16px;font-weight:700;}
+    .small{font-size:12px;}
+    .arrow{fill:none;stroke:#2f5d99;stroke-width:3;marker-end:url(#arrow);}
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2f5d99"/>
+    </marker>
+  </defs>
+  <text x="20" y="28" class="title">Max-Cut Simulated Annealing Benchmark Flow</text>
+  <rect x="20" y="50" width="220" height="70" rx="10" ry="10" class="box"/>
+  <text x="40" y="80">Input Graph</text>
+  <text x="40" y="100" class="small">weighted edges, n nodes</text>
+  <line x1="140" y1="120" x2="140" y2="150" class="arrow"/>
+  <rect x="260" y="150" width="240" height="70" rx="10" ry="10" class="box"/>
+  <text x="280" y="180">Multi-Start SA</text>
+  <text x="280" y="200" class="small">5 random seeds & 2M iterations</text>
+  <line x1="380" y1="220" x2="380" y2="250" class="arrow"/>
+  <rect x="260" y="250" width="240" height="70" rx="10" ry="10" class="box"/>
+  <text x="280" y="280">Inner SA Loop</text>
+  <text x="280" y="300" class="small">flip node, compute delta, accept/reject</text>
+  <line x1="380" y1="320" x2="380" y2="360" class="arrow"/>
+  <rect x="260" y="360" width="240" height="55" rx="10" ry="10" class="box"/>
+  <text x="280" y="385">Track best cut for each run</text>
+  <line x1="380" y1="415" x2="440" y2="415" class="arrow"/>
+  <rect x="460" y="370" width="260" height="75" rx="10" ry="10" class="box"/>
+  <text x="480" y="400">Select best solution across runs</text>
+  <text x="480" y="420" class="small">Highest cut value is final output</text>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="320" viewBox="0 0 760 320">
+  <style>text{font-family:Arial,Helvetica,sans-serif;fill:#1a202c;} .title{font-size:18px;font-weight:700;} .label{font-size:14px;} .cell{fill:#ffffff;stroke:#2f5d99;stroke-width:1;} .header{fill:#dae8ff;stroke:#2f5d99;stroke-width:1;}</style>
+  <text x="20" y="30" class="title">Max-Cut QUBO Problem Statement</text>
+  <text x="20" y="60" class="label">For each edge (i,j), the QUBO term is:</text>
+  <text x="20" y="82" class="label">f(x_i,x_j) = x_i + x_j - 2 x_i x_j</text>
+  <text x="20" y="100" class="label">This formula evaluates to 1 when vertices are in different partitions (cut), and 0 when they are in the same partition.</text>
+  <rect x="20" y="120" width="720" height="180" rx="12" ry="12" fill="#f4f7fb" stroke="#2f5d99" stroke-width="2"/>
+  <rect x="20" y="120" width="180" height="40" class="header"/>
+  <rect x="200" y="120" width="120" height="40" class="header"/>
+  <rect x="320" y="120" width="120" height="40" class="header"/>
+  <rect x="440" y="120" width="220" height="40" class="header"/>
+  <rect x="660" y="120" width="80" height="40" class="header"/>
+  <text x="35" y="145" class="label">Assignment Case</text>
+  <text x="215" y="145" class="label">x_i</text>
+  <text x="340" y="145" class="label">x_j</text>
+  <text x="455" y="145" class="label">Term: f(x_i,x_j)</text>
+  <text x="675" y="145" class="label">Edge Status</text>
+  <g>
+    <rect x="20" y="160" width="180" height="35" class="cell"/>
+    <rect x="200" y="160" width="120" height="35" class="cell"/>
+    <rect x="320" y="160" width="120" height="35" class="cell"/>
+    <rect x="440" y="160" width="220" height="35" class="cell"/>
+    <rect x="660" y="160" width="80" height="35" class="cell"/>
+    <text x="35" y="185" class="label">Same Partition (A)</text>
+    <text x="235" y="185" class="label">0</text>
+    <text x="355" y="185" class="label">0</text>
+    <text x="460" y="185" class="label">0 + 0 - 0 = 0</text>
+    <text x="680" y="185" class="label">Not Cut</text>
+  </g>
+  <g>
+    <rect x="20" y="195" width="180" height="35" class="cell"/>
+    <rect x="200" y="195" width="120" height="35" class="cell"/>
+    <rect x="320" y="195" width="120" height="35" class="cell"/>
+    <rect x="440" y="195" width="220" height="35" class="cell"/>
+    <rect x="660" y="195" width="80" height="35" class="cell"/>
+    <text x="35" y="220" class="label">Same Partition (B)</text>
+    <text x="235" y="220" class="label">1</text>
+    <text x="355" y="220" class="label">1</text>
+    <text x="460" y="220" class="label">1 + 1 - 2 = 0</text>
+    <text x="680" y="220" class="label">Not Cut</text>
+  </g>
+  <g>
+    <rect x="20" y="230" width="180" height="35" class="cell"/>
+    <rect x="200" y="230" width="120" height="35" class="cell"/>
+    <rect x="320" y="230" width="120" height="35" class="cell"/>
+    <rect x="440" y="230" width="220" height="35" class="cell"/>
+    <rect x="660" y="230" width="80" height="35" class="cell"/>
+    <text x="35" y="255" class="label">Different Partition</text>
+    <text x="235" y="255" class="label">1</text>
+    <text x="355" y="255" class="label">0</text>
+    <text x="460" y="255" class="label">1 + 0 - 0 = 1</text>
+    <text x="680" y="255" class="label">Cut</text>
+  </g>
+  <g>
+    <rect x="20" y="265" width="180" height="35" class="cell"/>
+    <rect x="200" y="265" width="120" height="35" class="cell"/>
+    <rect x="320" y="265" width="120" height="35" class="cell"/>
+    <rect x="440" y="265" width="220" height="35" class="cell"/>
+    <rect x="660" y="265" width="80" height="35" class="cell"/>
+    <text x="35" y="290" class="label">Different Partition</text>
+    <text x="235" y="290" class="label">0</text>
+    <text x="355" y="290" class="label">1</text>
+    <text x="460" y="290" class="label">0 + 1 - 0 = 1</text>
+    <text x="680" y="290" class="label">Cut</text>
+  </g>
+</svg>
