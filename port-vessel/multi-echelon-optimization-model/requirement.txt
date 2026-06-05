@@ -1,6 +1,0 @@
-pyomo
-pandas
-numpy
-networkx
-matplotlib
-highspy
